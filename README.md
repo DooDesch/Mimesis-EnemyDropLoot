@@ -11,14 +11,15 @@ This is a boilerplate template for creating new MelonLoader mods for Mimesis.
 Before you can use this boilerplate, you need:
 
 1. **Software Requirements:**
-   - [Mimesis](https://store.steampowered.com/app/XXXXX/MIMESIS/) (latest Steam build)
+   - [Mimesis](https://store.steampowered.com/app/2827200/MIMESIS/) (latest Steam build)
    - [.NET SDK 6.0+](https://dotnet.microsoft.com/download) (for building)
-   - [Visual Studio 2022](https://visualstudio.microsoft.com/) or [JetBrains Rider](https://www.jetbrains.com/rider/) (recommended)
+   - [Visual Studio 2022](https://visualstudio.microsoft.com/)
+   - [MelonLoader](https://melonwiki.xyz/#/)
    - [Git](https://git-scm.com/) (for version control)
 
 2. **Game Files:**
    - Access to your Mimesis installation directory
-   - MelonLoader installed in the game (usually auto-installed on first launch)
+   - MelonLoader installed in the game
 
 ### Workspace Repository Setup
 
