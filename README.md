@@ -14,8 +14,8 @@ Enemy Drop Loot rewards dungeon combat by letting every monster roll against the
 All options live in `UserData/MelonPreferences.cfg` under the `EnemyDropLoot` section:
 
 - `Enabled` – master toggle (default: `true`).
-- `DropChance` – per roll probability between `0` and `1` (default: `1` for 100%).
-- `MaxDropsPerKill` – number of rolls performed for each kill (default: `1`).
+- `DropChance` – per roll probability between `0` and `1` (default: `0.1` for 10%).
+- `MaxDropsPerKill` – number of rolls performed for each kill (default: `1`, clamped 0–100).
 
 Set `DropChance` below `1` to make drops less frequent, or raise `MaxDropsPerKill` for the chance to spit out multiple scraps from a single monster.
 
