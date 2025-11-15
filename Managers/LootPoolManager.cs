@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using EnemyDropLoot.Config;
+using EnemyDropLoot.Services;
 using MelonLoader;
 using MimicAPI.GameAPI;
-using ReluProtocol;
-using ReluProtocol.Enum;
 using UnityEngine;
 
 namespace EnemyDropLoot.Managers
@@ -87,39 +86,10 @@ namespace EnemyDropLoot.Managers
 
 			for (int i = 0; i < dropCount; i++)
 			{
-				TrySpawnLoot(monster);
-			}
-		}
-
-		private static void TrySpawnLoot(VMonster monster)
-		{
-			if (!TryPickItem(out int itemMasterId))
-			{
-				return;
-			}
-
-			ItemElement? itemElement = monster.VRoom.GetNewItemElement(itemMasterId, isFake: false);
-			if (itemElement == null)
-			{
-				// Item info might be missing. Nothing we can do.
-				return;
-			}
-
-			Vector3 spawnPos = monster.PositionVector;
-			if (!monster.VRoom.FindNearestPoly(spawnPos, out Vector3 nearestPos, 2f))
-			{
-				nearestPos = spawnPos;
-			}
-
-			PosWithRot dropPos = monster.Position.Clone();
-			dropPos.x = nearestPos.x;
-			dropPos.y = nearestPos.y;
-			dropPos.z = nearestPos.z;
-
-			int spawnResult = monster.VRoom.SpawnLootingObject(itemElement, dropPos, monster.IsIndoor, ReasonOfSpawn.ActorDying);
-			if (spawnResult == 0)
-			{
-				MelonLogger.Warning($"EnemyDropLoot: Failed to spawn loot item {itemMasterId} for monster {monster.MasterID}.");
+				if (TryPickItem(out int itemMasterId))
+				{
+					LootSpawnService.TrySpawnLoot(monster, itemMasterId);
+				}
 			}
 		}
 

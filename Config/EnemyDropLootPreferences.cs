@@ -12,20 +12,18 @@ namespace EnemyDropLoot.Config
 		private static MelonPreferences_Entry<bool> _enabled = null!;
 		private static MelonPreferences_Entry<float> _dropChance = null!;
 		private static MelonPreferences_Entry<int> _maxDropsPerKill = null!;
-		private static bool _initialized;
 
 		internal static void Initialize()
 		{
-			if (_initialized)
+			if (_category != null)
 			{
 				return;
 			}
 
 			_category = MelonPreferences.CreateCategory(CategoryId, "Enemy Drop Loot");
-			_enabled = CreateEntry("Enabled", true, "Enabled", "Toggle the Enemy Drop Loot mod.");
-			_dropChance = CreateEntry("DropChance", 1f, "Drop chance", "Chance (0-1) per roll that a slain enemy drops loot.");
-			_maxDropsPerKill = CreateEntry("MaxDropsPerKill", 1, "Max drops per kill", "Maximum number of loot rolls performed per enemy.");
-			_initialized = true;
+			_enabled = CreateEntry("Enabled", true, "Enabled", "Toggle the Enemy Drop Loot mod. Default: true");
+			_dropChance = CreateEntry("DropChance", 0.1f, "Drop chance", "Chance (0-1) per roll that a slain enemy drops loot. Default: 0.1");
+			_maxDropsPerKill = CreateEntry("MaxDropsPerKill", 1, "Max drops per kill", "Maximum number of loot rolls performed per enemy. Default: 1");
 		}
 
 		private static MelonPreferences_Entry<T> CreateEntry<T>(string identifier, T defaultValue, string displayName, string? description = null)
@@ -39,9 +37,9 @@ namespace EnemyDropLoot.Config
 		}
 
 		internal static bool Enabled => _enabled.Value;
-		private static float DropChance => Mathf.Clamp01(_dropChance.Value);
-		private static int MaxDropsPerKill => Mathf.Clamp(_maxDropsPerKill.Value, 0, 5);
-
+		internal static float DropChance => Mathf.Clamp01(_dropChance.Value);
+		internal static int MaxDropsPerKill => Mathf.Clamp(_maxDropsPerKill.Value, 0, 100);
+		
 		internal static int RollDropCount()
 		{
 			if (!Enabled)

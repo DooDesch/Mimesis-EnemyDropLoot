@@ -13,7 +13,8 @@ namespace EnemyDropLoot
 		{
 			EnemyDropLootPreferences.Initialize();
 			HarmonyInstance.PatchAll();
-			MelonLogger.Msg("EnemyDropLoot initialized.");
+			MelonLogger.Msg(
+				$"EnemyDropLoot initialized. Enabled={EnemyDropLootPreferences.Enabled}, DropChance={EnemyDropLootPreferences.DropChance:P0}, MaxDropsPerKill={EnemyDropLootPreferences.MaxDropsPerKill}");
 		}
 	}
 }

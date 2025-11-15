@@ -48,6 +48,7 @@
 		<Compile Include="Core.cs" />
 		<Compile Include="Config\EnemyDropLootPreferences.cs" />
 		<Compile Include="Managers\LootPoolManager.cs" />
+		<Compile Include="Services\LootSpawnService.cs" />
 		<Compile Include="Patches\DungeonRoomPatches.cs" />
 		<Compile Include="Patches\VMonsterPatches.cs" />
 	</ItemGroup>
