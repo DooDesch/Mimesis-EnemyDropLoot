@@ -95,6 +95,7 @@ jobs:
           dotnet build --configuration Release
           /p:WorkspaceLibPath="${{ github.workspace }}/Workspace/lib"
           /p:GameManagedPath="${{ github.workspace }}/Workspace/lib/game"
+          /p:GameAssemblyPath="${{ github.workspace }}/Workspace/lib/game"
           /p:MelonLoaderPath="${{ github.workspace }}/Workspace/lib/melonloader"
           /p:MimicAPIPath="${{ github.workspace }}/Workspace/MimicAPI"
 
