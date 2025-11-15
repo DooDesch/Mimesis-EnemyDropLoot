@@ -1,27 +1,30 @@
-# Enemy Drop Loot
+# EnemyDropLoot
 
-Adds loot drops to dungeon enemies by mirroring the current map's loot pool. Monsters no longer feel pointless – every kill can spit out credits, scrap, consumables, or whatever that level normally spawns on the ground.
+Reward dungeon combat by letting enemies drop the same loot that would spawn naturally in the current mission.
+
+EnemyDropLoot inspects the map's spawn table, mirrors it into an on-kill pool, and uses the game's own helpers to place rewards safely on the navmesh. Every fight now feeds progression instead of just draining resources.
 
 ## Features
 
-- Auto-detects real missions (ignores shop, tram, arena).
-- Builds a loot pool straight from the dungeon's spawn table so drops stay lore-friendly.
-- Uses the game's own spawn helpers to place loot safely on the navmesh.
-- Preference sliders for drop chance and number of rolls per kill.
-
-## Configuration
-
-All options are under `EnemyDropLoot` in `UserData/MelonPreferences.cfg`:
-
-- `Enabled`
-- `DropChance` (0–1)
-- `MaxDropsPerKill`
+- Detects real missions automatically (shop, tram, arena remain untouched)
+- Mirrors the active dungeon's spawn table so drops stay lore-friendly
+- Places loot with the native spawn helpers for reliable positions
+- Configurable drop chance and rolls per enemy in MelonPreferences
 
 ## Installation
 
-1. Install MelonLoader 0.7.1+.
-2. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods`.
-3. Launch the game via MelonLoader.
+1. Install the mod via Thunderstore Mod Manager or manually.
+2. Ensure MelonLoader 0.7.1+ is present in your game folder.
+3. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods` (or let your manager do it).
+4. Launch the game once so the config section is generated.
 
-Enjoy actually getting rewarded for taking risks in dungeons!
+## Configuration
+
+The mod adds an `EnemyDropLoot` block to `UserData/MelonPreferences.cfg`:
+
+- `Enabled` — master toggle (default: `true`)
+- `DropChance` — probability per kill, 0–1 (default: `0.1`)
+- `MaxDropsPerKill` — rolls granted for each enemy (default: `1`)
+
+Fine-tune the values to match how generous you want dungeons to feel, then enjoy actually getting rewarded for taking risks.
 
