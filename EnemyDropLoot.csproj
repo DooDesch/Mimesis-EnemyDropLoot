@@ -2,15 +2,15 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>disable</Nullable>
-		<RootNamespace>Boilerplate</RootNamespace>
+		<Nullable>enable</Nullable>
+		<RootNamespace>EnemyDropLoot</RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
 		<Version>1.0.0</Version>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<AssemblyName>Boilerplate</AssemblyName>
+		<AssemblyName>EnemyDropLoot</AssemblyName>
 		<WorkspaceLibPath Condition="'$(WorkspaceLibPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib</WorkspaceLibPath>
 		<GameManagedPath Condition="'$(GameManagedPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib/game</GameManagedPath>
 		<MelonLoaderPath Condition="'$(MelonLoaderPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib/melonloader</MelonLoaderPath>
@@ -32,6 +32,9 @@
 		<Reference Include="0Harmony">
 			<HintPath>$(MelonLoaderPath)/0Harmony.dll</HintPath>
 		</Reference>
+		<Reference Include="System.Collections.Immutable">
+			<HintPath>$(GameManagedPath)/System.Collections.Immutable.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -43,17 +46,17 @@
 
 	<ItemGroup>
 		<Compile Include="Core.cs" />
-		<Compile Include="Config\BoilerplatePreferences.cs" />
-		<!-- Uncomment when you add actual patches -->
-		<!-- <Compile Include="Patches\ExamplePatch.cs" /> -->
+		<Compile Include="Config\EnemyDropLootPreferences.cs" />
+		<Compile Include="Managers\LootPoolManager.cs" />
+		<Compile Include="Patches\DungeonRoomPatches.cs" />
+		<Compile Include="Patches\VMonsterPatches.cs" />
 	</ItemGroup>
-	<!-- Uncomment to use MimicAPI -->
-	<!-- <ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="$(MimicAPIPath)/MimicAPI.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
 			<Private>false</Private>
 		</ProjectReference>
-	</ItemGroup> -->
+	</ItemGroup>
 	
 	<PropertyGroup>
 		<ModsDirectory>F:\Launcher\SteamLibrary\steamapps\common\MIMESIS\Mods</ModsDirectory>

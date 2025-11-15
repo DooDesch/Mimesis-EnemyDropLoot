@@ -1,24 +1,27 @@
-# Boilerplate Mod
+# Enemy Drop Loot
 
-A boilerplate template for Mimesis mods.
+Adds loot drops to dungeon enemies by mirroring the current map's loot pool. Monsters no longer feel pointless – every kill can spit out credits, scrap, consumables, or whatever that level normally spawns on the ground.
 
 ## Features
 
-- Basic mod structure
-- Configuration system
-- Harmony patching example
-- GitHub Actions workflow for releases
+- Auto-detects real missions (ignores shop, tram, arena).
+- Builds a loot pool straight from the dungeon's spawn table so drops stay lore-friendly.
+- Uses the game's own spawn helpers to place loot safely on the navmesh.
+- Preference sliders for drop chance and number of rolls per kill.
 
 ## Configuration
 
-- `Enabled`: Enable/disable the mod (default: `true`)
+All options are under `EnemyDropLoot` in `UserData/MelonPreferences.cfg`:
+
+- `Enabled`
+- `DropChance` (0–1)
+- `MaxDropsPerKill`
 
 ## Installation
 
-1. Install via Thunderstore Mod Manager
-2. Or manually download and extract to `Mimesis/MelonLoader/Mods`
+1. Install MelonLoader 0.7.1+.
+2. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods`.
+3. Launch the game via MelonLoader.
 
-## Development
-
-This is a template mod. Replace all occurrences of "Boilerplate" with your mod name and implement your functionality.
+Enjoy actually getting rewarded for taking risks in dungeons!
 

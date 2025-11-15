@@ -1,8 +1,8 @@
 {
-  "name": "Boilerplate",
-  "version_number": "1.0.0",
-  "website_url": "https://github.com/DooDesch/Mimesis-Boilerplate",
-  "description": "A boilerplate template for Mimesis mods. Replace this with your mod description.",
+  "name": "EnemyDropLoot",
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/DooDesch",
+  "description": "Makes dungeon enemies drop loot that matches the current map's spawn pool.",
   "dependencies": [
     "LavaGang-MelonLoader-0.7.1"
   ],

@@ -1,20 +1,19 @@
-using Boilerplate.Config;
+using EnemyDropLoot.Config;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(Boilerplate.Core), "Boilerplate", "1.0.0", "DooDesch", null)]
+[assembly: MelonInfo(typeof(EnemyDropLoot.Core), "EnemyDropLoot", "0.1.0", "DooDesch", null)]
 [assembly: MelonGame("ReLUGames", "MIMESIS")]
-// Uncomment if using MimicAPI
-// [assembly: MelonOptionalDependencies("MimicAPI")]
+[assembly: MelonOptionalDependencies("MimicAPI")]
 
-namespace Boilerplate
+namespace EnemyDropLoot
 {
 	public sealed class Core : MelonMod
 	{
 		public override void OnInitializeMelon()
 		{
-			BoilerplatePreferences.Initialize();
+			EnemyDropLootPreferences.Initialize();
 			HarmonyInstance.PatchAll();
-			MelonLogger.Msg("Boilerplate initialized. Enabled={0}", BoilerplatePreferences.Enabled);
+			MelonLogger.Msg("EnemyDropLoot initialized.");
 		}
 	}
 }
