@@ -36,7 +36,7 @@ jobs:
         id: version-check
         run: |
           TAG_VERSION="${GITHUB_REF#refs/tags/v}"
-          CS_VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Boilerplate.csproj)
+          CS_VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" EnemyDropLoot.csproj)
           if [ "$TAG_VERSION" != "$CS_VERSION" ]; then
             echo "Version mismatch: Tag version is $TAG_VERSION, but csproj version is $CS_VERSION"
             exit 1
@@ -90,7 +90,7 @@ jobs:
       - name: Prepare release directory
         run: |
           mkdir -p release
-          cp bin/Release/netstandard2.1/Boilerplate.dll release/
+          cp bin/Release/netstandard2.1/EnemyDropLoot.dll release/
           if [ -d "thunderstore" ]; then
             cp -r thunderstore/* release/ 2>/dev/null || true
             # Update version in manifest.json if it exists
@@ -110,13 +110,13 @@ jobs:
           fi
 
       - name: Create release ZIP
-        run: zip -j "Boilerplate_${{ steps.version-check.outputs.version }}.zip" release/*
+        run: zip -j "EnemyDropLoot_${{ steps.version-check.outputs.version }}.zip" release/*
 
       - name: Upload Release ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: Boilerplate
-          path: "Boilerplate_${{ steps.version-check.outputs.version }}.zip"
+          name: EnemyDropLoot
+          path: "EnemyDropLoot_${{ steps.version-check.outputs.version }}.zip"
 
   release:
     needs: build
@@ -125,7 +125,7 @@ jobs:
       - name: Download built ZIP
         uses: actions/download-artifact@v4
         with:
-          name: Boilerplate
+          name: EnemyDropLoot
 
       - name: Checkout code for changelog
         uses: actions/checkout@v4
@@ -157,17 +157,17 @@ jobs:
       - name: Download built ZIP
         uses: actions/download-artifact@v4
         with:
-          name: Boilerplate
+          name: EnemyDropLoot
 
       - name: Extract DLL from ZIP
         run: |
-          unzip -q "Boilerplate_${{ needs.build.outputs.version }}.zip" -d release/
+          unzip -q "EnemyDropLoot_${{ needs.build.outputs.version }}.zip" -d release/
           ls -la release/
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/Boilerplate.dll
+          files: release/EnemyDropLoot.dll
           body: |
             ## Changes in ${{ needs.build.outputs.version }}
 
@@ -185,12 +185,12 @@ jobs:
       - name: Download built ZIP
         uses: actions/download-artifact@v4
         with:
-          name: Boilerplate
+          name: EnemyDropLoot
 
       - name: Extract ZIP for Thunderstore
         run: |
           mkdir -p thunderstore-package
-          unzip -q "Boilerplate_${{ needs.build.outputs.version }}.zip" -d thunderstore-package/
+          unzip -q "EnemyDropLoot_${{ needs.build.outputs.version }}.zip" -d thunderstore-package/
           
 
       - name: Upload to Thunderstore
@@ -199,8 +199,8 @@ jobs:
           token: ${{ secrets.THUNDERSTORE_TOKEN }}
           community: mimesis
           namespace: DooDesch
-          name: Boilerplate
-          description: A boilerplate template for Mimesis mods. Replace this with your mod description.
+          name: EnemyDropLoot
+          description: Enemies drop loot that matches the active dungeon spawn pool.
           version: ${{ needs.build.outputs.version }}
           repo: mimesis.thunderstore.io
           path: thunderstore-package
