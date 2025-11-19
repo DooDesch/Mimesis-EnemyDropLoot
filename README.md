@@ -1,6 +1,11 @@
-# Enemy Drop Loot
+# MIMESIS - EnemyDropLoot
 
 Enemy Drop Loot rewards dungeon combat by letting every monster roll against the current map's loot table. As soon as you board any regular mission map (not the shop, tram or arena), the mod mirrors the dungeon's active loot pool and uses it whenever an enemy dies. Drops respect each map's weighted loot choices, so you'll only see items that could naturally appear in that level.
+
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Game](https://img.shields.io/badge/game-MIMESIS-purple)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 ---
 

@@ -1,8 +1,13 @@
-# EnemyDropLoot
+# MIMESIS - EnemyDropLoot
 
 Reward dungeon combat by letting enemies drop the same loot that would spawn naturally in the current mission.
 
 EnemyDropLoot inspects the map's spawn table, mirrors it into an on-kill pool, and uses the game's own helpers to place rewards safely on the navmesh. Every fight now feeds progression instead of just draining resources.
+
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Game](https://img.shields.io/badge/game-MIMESIS-purple)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 ## Features
 
