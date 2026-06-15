@@ -1,133 +1,70 @@
 # MIMESIS - EnemyDropLoot
 
-Enemy Drop Loot rewards dungeon combat by letting every monster roll against the current map's loot table. As soon as you board any regular mission map (not the shop, tram or arena), the mod mirrors the dungeon's active loot pool and uses it whenever an enemy dies. Drops respect each map's weighted loot choices, so you'll only see items that could naturally appear in that level.
+> Dungeon enemies in MIMESIS now drop loot - every kill rolls against the current map's own loot pool and can drop a map-appropriate item next to the corpse, so combat actually rewards you.
 
-![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Version](https://img.shields.io/badge/version-1.0.3-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
-![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
-
----
-
-## Table of Contents
-
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [How It Works](#how-it-works)
-- [Development](#development)
-- [License](#license)
-
----
 
 ## Features
 
-- **Auto-detects dungeon rooms** and ignores the shop/tram/end rooms
-- **Builds a live loot pool** from the map's own spawn configuration to keep drops lore-friendly
-- **Spawns loot next to the corpse** using the game's own spawn helpers (navmesh safe)
-- **Simple preference toggles** for enabling the mod, adjusting drop chance, and allowing multi-drop kills
-
----
+- Rolls for loot whenever an enemy dies in an active dungeon room (Harmony prefix on `VMonster.OnDead`) and spawns the reward at the corpse.
+- Builds its loot pool from the live dungeon's own spawn data, so drops only ever contain items that could naturally appear on that level.
+- Picks each drop through the source's own weighted roll, with a fallback to a known candidate item if a roll yields nothing.
+- Spawns loot with the game's own helpers: scatters within a 2 m radius and snaps to the navmesh before spawning, for reliable, valid positions.
+- Only activates inside real dungeon rooms (wired on `DungeonRoom.Initialize`) and tears the pool down when the room is vacated; non-dungeon contexts like shop, tram or arena are never configured.
+- Configurable drop chance and number of rolls per kill via MelonPreferences.
 
 ## Requirements
 
 | Component | Version |
 |-----------|---------|
-| **Mimesis** | Latest Steam build |
-| **MelonLoader** | 0.7.1 or higher |
-| **MimicAPI** | [Required](https://github.com/NeoMimicry/MimicAPI) |
+| MIMESIS | 0.3.0 (current Steam build) |
+| MelonLoader | 0.7.3+ |
+| MimicAPI | Required - [NeoMimicry/MimicAPI](https://github.com/NeoMimicry/MimicAPI) |
 
----
+This mod uses MimicAPI to read private game internals (room spawn data and the world reference). MimicAPI must be installed for EnemyDropLoot to work.
 
 ## Installation
 
-1. Download the latest `EnemyDropLoot.dll` release from the [releases page](../../releases)
-2. Ensure you have [MimicAPI](https://github.com/NeoMimicry/MimicAPI) installed
-3. Place the file into your Mimesis mods directory:
-   ```
-   MIMESIS/MelonLoader/Mods/EnemyDropLoot.dll
-   ```
-4. Launch the game – the mod announces itself in the MelonLoader console
-
-> **Note:** The configuration file will be created automatically on first launch at `UserData/MelonPreferences.cfg`
-
----
+- Recommended: install via a Thunderstore mod manager (r2modman / Gale), which pulls in MelonLoader and MimicAPI automatically.
+- Manual:
+  1. Make sure MelonLoader 0.7.3+ is installed in your game folder.
+  2. Download `EnemyDropLoot.dll` from the [Releases page](../../releases).
+  3. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods/`.
+  4. Launch the game once so the config section is generated.
 
 ## Configuration
 
-All options live in `UserData/MelonPreferences.cfg` under the `EnemyDropLoot` section.
+Stored in `UserData/MelonPreferences.cfg` under the `EnemyDropLoot` category.
 
-### Available Options
+| Option | Description | Default | Values/Range |
+|--------|-------------|---------|--------------|
+| `Enabled` | Master toggle for the mod. | `true` | `true` / `false` |
+| `DropChance` | Chance per roll that a slain enemy drops loot. Clamped to 0-1 at read time. | `0.1` | `0.0` - `1.0` |
+| `MaxDropsPerKill` | Maximum number of loot rolls performed per enemy. Clamped to 0-100; the roll routine performs at least 1 roll. | `1` | `0` - `100` |
 
-| Option | Description | Default | Range |
-|--------|-------------|---------|-------|
-| `Enabled` | Master toggle | `true` | `true` / `false` |
-| `DropChance` | Per roll probability | `0.1` (10%) | `0` - `1` |
-| `MaxDropsPerKill` | Number of rolls performed for each kill | `1` | `0` - `100` |
+Each kill performs `max(1, MaxDropsPerKill)` rolls, and each roll succeeds when a random value is at or below `DropChance`. Raise `DropChance` toward `1.0` for more frequent drops, and raise `MaxDropsPerKill` for the chance of multiple drops per enemy.
 
-### Configuration Examples
+## Usage
 
-| Scenario | `DropChance` | `MaxDropsPerKill` | Expected Result |
-|----------|--------------|-------------------|-----------------|
-| Guaranteed multiple drops | `1.0` | `5` | ~5 drops per kill |
-| Rare but possible multiple | `0.01` | `100` | ~1 drop per kill |
-| Standard 10% chance | `0.1` | `1` | 10% chance per kill |
+There are no keybinds and no menu - the mod is fully automatic. Enter any real dungeon mission map and the mod silently builds that room's loot pool; killed enemies may then drop map-appropriate items at their death position. The MelonLoader console confirms the pool loaded (for example, `Loaded N loot spawn bundles with M unique items`).
 
-> **Note:** Set `DropChance` below `1` (100%) to make drops less frequent, or raise `MaxDropsPerKill` for the chance to spit out multiple scraps from a single monster.
+## Compatibility
 
----
+Built for Mimesis 0.3.0 / MelonLoader 0.7.3. Drops only trigger inside dungeon rooms, so shop, tram and arena scenes are unaffected.
 
-## How It Works
+## Building (developers)
 
-Enemy Drop Loot integrates with the game's dungeon system to provide contextual loot drops:
-
-1. **Detects dungeon rooms** when you enter a regular mission map
-2. **Mirrors the active loot pool** from the map's spawn configuration
-3. **Intercepts enemy death events** to trigger loot rolls
-4. **Spawns loot safely** using the game's navmesh-aware spawn helpers
-
-The mod ensures that:
-- Only items that could naturally appear in that level will drop
-- Loot respects each map's weighted loot choices
-- Drops are placed safely near the corpse using proper spawn mechanics
-
----
-
-## Development
-
-### Project Structure
+Built against `netstandard2.1`. References resolve from `Workspace/lib/game` (game DLLs) and `Workspace/lib/melonloader`, plus a `ProjectReference` to `Workspace/MimicAPI`. From the mod folder:
 
 ```
-EnemyDropLoot/
-├── Core.cs                          # Main entry point
-├── Managers/
-│   └── LootPoolManager.cs           # Core loot pool logic
-└── Patches/
-    ├── DungeonRoomPatches.cs        # Wires manager on dungeon load/unload
-    └── VMonsterPatches.cs           # Injects loot when monsters die
+dotnet build -c Release
 ```
 
-### Key Files
+The post-build step copies `EnemyDropLoot.dll` into the game's `Mods` directory.
 
-- **`Core.cs`** - Core entry point and mod initialization
-- **`Managers/LootPoolManager.cs`** - Core logic for managing loot pools and drops
-- **`Patches/DungeonRoomPatches.cs`** - Handles dungeon room detection and loot pool setup
-- **`Patches/VMonsterPatches.cs`** - Intercepts monster death events to trigger loot drops
+## Credits / License
 
-### Extending the Mod
-
-Feel free to tweak roll logic or extend the manager for:
-- Rarity-based drops
-- Scaling with difficulty
-- Additional filters (enemy type, room type, etc.)
-
-Contributions are welcome via pull request.
-
----
-
-## License
-
-This project is provided as-is under the **MIT License**. Contributions are welcome via pull requests.
-
----
+Author: DooDesch. Licensed under the MIT License. Source and releases: [Mimesis-EnemyDropLoot](https://github.com/DooDesch/Mimesis-EnemyDropLoot).

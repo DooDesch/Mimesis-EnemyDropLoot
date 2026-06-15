@@ -1,35 +1,52 @@
 # MIMESIS - EnemyDropLoot
 
-Reward dungeon combat by letting enemies drop the same loot that would spawn naturally in the current mission.
+> Dungeon enemies in MIMESIS now drop loot - every kill rolls against the current map's own loot pool and can drop a map-appropriate item next to the corpse, so combat actually rewards you.
 
-EnemyDropLoot inspects the map's spawn table, mirrors it into an on-kill pool, and uses the game's own helpers to place rewards safely on the navmesh. Every fight now feeds progression instead of just draining resources.
-
-![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Version](https://img.shields.io/badge/version-1.0.3-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
-![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 ## Features
 
-- Detects real missions automatically (shop, tram, arena remain untouched)
-- Mirrors the active dungeon's spawn table so drops stay lore-friendly
-- Places loot with the native spawn helpers for reliable positions
-- Configurable drop chance and rolls per enemy in MelonPreferences
+- Rolls for loot whenever an enemy dies in an active dungeon room and spawns the reward at the corpse.
+- Builds its loot pool from the live dungeon's own spawn data, so drops only ever contain items that could naturally appear on that level.
+- Picks each drop through the source's own weighted roll, with a fallback so a kill rarely comes up empty.
+- Spawns loot with the game's own helpers: scatters within a 2 m radius and snaps to the navmesh, for reliable, valid positions.
+- Only activates inside real dungeon rooms; shop, tram and arena scenes are never touched.
+- Configurable drop chance and number of rolls per kill via MelonPreferences.
+
+## Requirements
+
+| Component | Version |
+|-----------|---------|
+| MIMESIS | 0.3.0 (current Steam build) |
+| MelonLoader | 0.7.3+ |
+| MimicAPI | Required - [NeoMimicry/MimicAPI](https://github.com/NeoMimicry/MimicAPI) |
+
+EnemyDropLoot uses MimicAPI to read private game internals, so MimicAPI must be installed for the mod to work.
 
 ## Installation
 
-1. Install the mod via Thunderstore Mod Manager or manually.
-2. Ensure MelonLoader 0.7.1+ is present in your game folder.
-3. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods` (or let your manager do it).
-4. Launch the game once so the config section is generated.
+- Recommended: install via a Thunderstore mod manager (r2modman / Gale). It pulls in MelonLoader and MimicAPI for you.
+- Manual:
+  1. Make sure MelonLoader 0.7.3+ is installed in your game folder.
+  2. Download `EnemyDropLoot.dll` from the [Releases page](https://github.com/DooDesch/Mimesis-EnemyDropLoot/releases).
+  3. Copy `EnemyDropLoot.dll` **and** `MimicAPI.dll` into `MIMESIS/Mods/`.
+  4. Launch the game once so the config section is generated.
 
 ## Configuration
 
-The mod adds an `EnemyDropLoot` block to `UserData/MelonPreferences.cfg`:
+Stored in `UserData/MelonPreferences.cfg` under the `EnemyDropLoot` category.
 
-- `Enabled` — master toggle (default: `true`)
-- `DropChance` — probability per kill, 0–1 (default: `0.1`)
-- `MaxDropsPerKill` — rolls granted for each enemy (default: `1`)
+| Option | Description | Default | Values/Range |
+|--------|-------------|---------|--------------|
+| `Enabled` | Master toggle for the mod. | `true` | `true` / `false` |
+| `DropChance` | Chance per roll that a slain enemy drops loot. Clamped to 0-1. | `0.1` | `0.0` - `1.0` |
+| `MaxDropsPerKill` | Maximum number of loot rolls performed per enemy. Clamped to 0-100; at least 1 roll is performed. | `1` | `0` - `100` |
 
-Fine-tune the values to match how generous you want dungeons to feel, then enjoy actually getting rewarded for taking risks.
+Raise `DropChance` toward `1.0` for more frequent drops, and raise `MaxDropsPerKill` for the chance of multiple drops per enemy.
 
+## Usage
+
+No keybinds and no menu - the mod is fully automatic. Enter any real dungeon mission map and the mod silently builds that room's loot pool; killed enemies may then drop map-appropriate items at their death position. The MelonLoader console confirms the pool loaded (for example, `Loaded N loot spawn bundles with M unique items`).
