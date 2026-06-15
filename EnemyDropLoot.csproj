@@ -6,9 +6,9 @@
 		<RootNamespace>EnemyDropLoot</RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
-		<Version>1.0.2</Version>
-		<AssemblyVersion>1.0.2.0</AssemblyVersion>
-		<FileVersion>1.0.2.0</FileVersion>
+		<Version>1.0.3</Version>
+		<AssemblyVersion>1.0.3.0</AssemblyVersion>
+		<FileVersion>1.0.3.0</FileVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<AssemblyName>EnemyDropLoot</AssemblyName>
 		<WorkspaceLibPath Condition="'$(WorkspaceLibPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib</WorkspaceLibPath>
@@ -53,7 +53,7 @@
 		<Compile Include="Patches\VMonsterPatches.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="$(MimicAPIPath)/MimicAPI.csproj">
+		<ProjectReference Include="$(MimicAPIPath)/MimicAPI/MimicAPI.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
 			<Private>false</Private>
 		</ProjectReference>
@@ -68,7 +68,7 @@
 	<Target Name="PostBuild" AfterTargets="Build" Condition="'$(OS)' == 'Windows_NT'">
 		<Exec Condition="Exists('$(ModsDirectory)')" Command="cmd /c copy /Y &quot;$(TargetPath)&quot; &quot;$(ModsDirectory)&quot;" ContinueOnError="true" />
 		<!-- Uncomment to copy MimicAPI.dll automatically -->
-		<!-- <Exec Condition="Exists('$(ModsDirectory)') And Exists('$(MimicAPIPath)\bin\$(Configuration)\netstandard2.1\MimicAPI.dll')" Command="cmd /c copy /Y &quot;$(MimicAPIPath)\bin\$(Configuration)\netstandard2.1\MimicAPI.dll&quot; &quot;$(ModsDirectory)&quot;" ContinueOnError="true" /> -->
+		<!-- <Exec Condition="Exists('$(ModsDirectory)') And Exists('$(MimicAPIPath)\MimicAPI\bin\$(Configuration)\netstandard2.1\MimicAPI.dll')" Command="cmd /c copy /Y &quot;$(MimicAPIPath)\MimicAPI\bin\$(Configuration)\netstandard2.1\MimicAPI.dll&quot; &quot;$(ModsDirectory)&quot;" ContinueOnError="true" /> -->
 		<!-- Uncomment to auto-start game after build (only if not already running) -->
 		<!-- <Exec Condition="Exists('$(GameExePath)') And '$(GIT_INDEX_FILE)' == ''" Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;if (-not (Get-Process -Name 'MIMESIS' -ErrorAction SilentlyContinue)) { Start-Process -FilePath '$(GameExePath)' }&quot;" ContinueOnError="true" /> -->
 	</Target>

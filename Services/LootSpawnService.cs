@@ -1,4 +1,5 @@
 using MelonLoader;
+using MimicAPI.GameAPI;
 using ReluProtocol;
 using ReluProtocol.Enum;
 using UnityEngine;
@@ -25,9 +26,15 @@ namespace EnemyDropLoot.Services
 			}
 
 			float searchRadius = Mathf.Max(1.5f, DropScatterRadius);
-			if (!monster.VRoom.FindNearestPoly(spawnPos, out Vector3 nearestPos, searchRadius))
+			Vector3 nearestPos = spawnPos;
+			VWorld? vworld = CoreAPI.GetVWorld();
+			if (vworld != null)
 			{
-				nearestPos = spawnPos;
+				Vector3 navPos = vworld.FindNearestPoly(spawnPos, searchRadius);
+				if (navPos != NavMeshConstants.INVALID_POSITION)
+				{
+					nearestPos = navPos;
+				}
 			}
 
 			PosWithRot dropPos = monster.Position.Clone();
