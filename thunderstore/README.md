@@ -1,5 +1,8 @@
 # MIMESIS - EnemyDropLoot
 
+> 🛟 **Need help or found a bug?** Get support at [support.doodesch.de](https://support.doodesch.de).
+
+
 > Dungeon enemies in MIMESIS now drop loot - every kill rolls against the current map's own loot pool and can drop a map-appropriate item next to the corpse, so combat actually rewards you.
 
 ![Version](https://img.shields.io/badge/version-1.0.3-blue)
