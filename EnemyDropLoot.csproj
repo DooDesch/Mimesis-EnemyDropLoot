@@ -6,9 +6,9 @@
 		<RootNamespace>EnemyDropLoot</RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
-		<Version>1.0.5</Version>
-		<AssemblyVersion>1.0.5.0</AssemblyVersion>
-		<FileVersion>1.0.5.0</FileVersion>
+		<Version>1.0.6</Version>
+		<AssemblyVersion>1.0.6.0</AssemblyVersion>
+		<FileVersion>1.0.6.0</FileVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<AssemblyName>EnemyDropLoot</AssemblyName>
 		<WorkspaceLibPath Condition="'$(WorkspaceLibPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib</WorkspaceLibPath>
@@ -35,6 +35,14 @@
 		<Reference Include="System.Collections.Immutable">
 			<HintPath>$(GameManagedPath)/System.Collections.Immutable.dll</HintPath>
 		</Reference>
+		<!-- Used only by the Debug-only profiling/stress-test harness (#if DEBUG); unused code in Release so it
+		     adds no reference to the Release output. -->
+		<Reference Include="Unity.InputSystem">
+			<HintPath>$(GameManagedPath)/Unity.InputSystem.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>$(GameManagedPath)/UnityEngine.IMGUIModule.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -51,6 +59,8 @@
 		<Compile Include="Services\LootSpawnService.cs" />
 		<Compile Include="Patches\DungeonRoomPatches.cs" />
 		<Compile Include="Patches\VMonsterPatches.cs" />
+		<Compile Include="Debugging\DebugTools.cs" />
+		<Compile Include="Debugging\RoomUpdateProfilerPatch.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="$(MimicAPIPath)/MimicAPI/MimicAPI.csproj">

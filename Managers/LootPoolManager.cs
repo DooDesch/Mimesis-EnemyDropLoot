@@ -21,7 +21,17 @@ namespace EnemyDropLoot.Managers
 			LootSources.Clear();
 			FallbackItemIds.Clear();
 			_hasActiveRoom = false;
+#if DEBUG
+			Debugging.DebugTools.OnRoomReset();
+#endif
 		}
+
+#if DEBUG
+		// Debug-only accessors used by the profiling/stress-test harness (DebugTools).
+		internal static IVroom? ActiveRoomDebug => _hasActiveRoom ? _activeRoom : null;
+
+		internal static bool DebugTryPickItem(out int itemMasterId) => TryPickItem(out itemMasterId);
+#endif
 
 		internal static void ConfigureForDungeon(DungeonRoom room)
 		{

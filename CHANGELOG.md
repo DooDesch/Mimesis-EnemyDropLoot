@@ -4,7 +4,14 @@ All notable changes to EnemyDropLoot are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 project adheres to Semantic Versioning.
 
-## [1.0.5] - 2026-06-17
+## [1.0.6] - 2026-06-22
+
+### Fixed
+- Slain enemies dropped roughly twice as much loot as configured. The mod's Harmony patches were applied twice (MelonLoader auto-applies them, and the mod also called PatchAll() itself), so the death handler ran twice per kill. Patches now apply exactly once, so a kill drops the configured amount.
+- Loot is now dropped on the same event the game uses for its own monster drops, so it spawns exactly once per death and no longer double-drops on revives or force-kills.
+- Dropped loot is now placed like the game's own loot (on the nearest navmesh point, no scatter), so it stays within the area the game cleans up on room transitions instead of lingering. This reduces the loot-object build-up that could lower frame rates in loot-heavy areas. (Addresses the "FPS drop" report.)
+
+
 
 ### Changed
 - Started maintaining a full changelog that is now published on GitHub, Thunderstore

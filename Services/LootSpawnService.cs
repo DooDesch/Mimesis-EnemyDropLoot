@@ -8,8 +8,6 @@ namespace EnemyDropLoot.Services
 {
 	internal static class LootSpawnService
 	{
-		private const float DropScatterRadius = 2f;
-
 		internal static bool TrySpawnLoot(VMonster monster, int itemMasterId)
 		{
 			ItemElement? itemElement = monster.VRoom.GetNewItemElement(itemMasterId, isFake: false);
@@ -18,19 +16,17 @@ namespace EnemyDropLoot.Services
 				return false;
 			}
 
+			// Place the drop exactly like the game's own monster loot (VMonster.OnDying): snap the monster's
+			// position to the nearest navmesh poly with the DEFAULT search radius, and NO horizontal scatter.
+			// This keeps the drop on valid navmesh near the monster, inside the room's loot-collecting volume, so
+			// it participates in the same drain/cleanup as vanilla loot (the old 2m scatter + tight 2f snap could
+			// land loot outside that volume, where the game never cleans it up).
 			Vector3 spawnPos = monster.PositionVector;
-			if (DropScatterRadius > 0f)
-			{
-				Vector2 offset2D = UnityEngine.Random.insideUnitCircle * DropScatterRadius;
-				spawnPos += new Vector3(offset2D.x, 0f, offset2D.y);
-			}
-
-			float searchRadius = Mathf.Max(1.5f, DropScatterRadius);
 			Vector3 nearestPos = spawnPos;
 			VWorld? vworld = CoreAPI.GetVWorld();
 			if (vworld != null)
 			{
-				Vector3 navPos = vworld.FindNearestPoly(spawnPos, searchRadius);
+				Vector3 navPos = vworld.FindNearestPoly(spawnPos);
 				if (navPos != NavMeshConstants.INVALID_POSITION)
 				{
 					nearestPos = navPos;
@@ -49,6 +45,9 @@ namespace EnemyDropLoot.Services
 				return false;
 			}
 
+#if DEBUG
+			Debugging.DebugTools.OnModLootSpawned();
+#endif
 			return true;
 		}
 	}
